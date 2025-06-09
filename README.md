@@ -1,11 +1,9 @@
 # SNES Dumper
 
-<img src="https://github.com/X-death25/MD_Dumper/blob/main/github_gfx/md_dumper_title.png" data-canonical-src="https://github.com/X-death25/MD_Dumper/blob/main/github_gfx/md_dumper_title.png" width="100%" /> 
+<img src="https://github.com/X-death25/SNES_Dumper/blob/main/github_gfx/snes_dumper_title.png" data-canonical-src="https://github.com/X-death25/SNES_Dumper/blob/main/github_gfx/snes_dumper_title.png" width="100%" /> 
 
-MD-Dumper is an USB-C alternative of Krizz FlashKit programmer you can backup / restore your cartridge and save for use it in Flashcart or Emu.  
-8 bit Master System and Game Gear dump is also supported.  
-You could also use included csv file for increase special game compatibility as well as extended flash memory support for third party cartridges.
-
+Snes_Dumper is an USB-C cartridge reader writer for Super Nes / Super Famicom.
+You can backup / restore your cartridge and save for use it in Flashcart or Emu.  
 
 Supported Features
 -----
