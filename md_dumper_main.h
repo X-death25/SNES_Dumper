@@ -16,6 +16,7 @@
 #include "libs/sfd.c"
 
 // USB Special Command
+
 #define WAKEUP						0x10	
 #define READ_MD						0x11
 #define READ_MD_SAVE					0x12
@@ -360,6 +361,7 @@ unsigned int crc32(unsigned int seed, const void* data, int data_size)
 
 
 //Timer functions according to Operating Systems
+
 #if defined(_WIN32)		//Windows
 	clock_t microsec_start;
 	clock_t microsec_end;
