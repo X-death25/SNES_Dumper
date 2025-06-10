@@ -2,7 +2,7 @@
 
 <img src="https://github.com/X-death25/SNES_Dumper/blob/main/github_gfx/snes_dumper_title.png" data-canonical-src="https://github.com/X-death25/SNES_Dumper/blob/main/github_gfx/snes_dumper_title.png" width="100%" /> 
 
-Snes_Dumper is an USB-C cartridge reader writer for Super Nes / Super Famicom.
+Snes_Dumper is an USB-C cartridge reader writer for Super Nes / Super Famicom. 
 You can backup / restore your cartridge and save for use it in Flashcart or Emu.  
 
 Supported Features
@@ -10,18 +10,16 @@ Supported Features
 
 | Feature | Implemented |
 | ------- | ----------- |
-| ROM Dump up to 32 MEG  Classic              | :white_check_mark: |
-| ROM Dump up to 128 MEG  Bankswitch          | :white_check_mark: |
-| SRAM Backup Memory Classic                  | :white_check_mark: |
-| SRAM Backup Memory Bankswitch               | :white_check_mark: |
-| Rewrite Krikzz flashkit cart or compatible  | :white_check_mark: |
-| Rewrite 64 MEG flash cartridge (bankswitch) | :arrows_counterclockwise: |
-| ROM Dump in Sega Lock-on mode               | :white_check_mark: |
-| ROM Dump in Super Street Fighter II mapper  | :white_check_mark: |
-| Master System / MARK III ROM Dump           | :white_check_mark: |
-| GAME GEAR ROM Dump                          | :white_check_mark: |
-| Extended CSV features                       | :white_check_mark: |
-| Open-Everdrive support                      | :arrows_counterclockwise: |
+| ROM Dump up to 32 MEG  LoRom                | :white_check_mark: |
+| ROM Dump up to 32 MEG  HiRom                | :white_check_mark: |
+| ROM Dump up to 64 MEG  Ex-HiRom             | :white_check_mark: |
+| ROM Dump up to 16 MEG  DSP 1-2-3            | :white_check_mark: |
+| ROM Dump up to 32 MEG  SDD1                 | :white_check_mark: |
+| ROM Dump up to 32 MEG  SA-1                 | :arrows_counterclockwise: |
+| Rewrite LoRom cart or compatible            | :white_check_mark: |
+| Rewrite HiRom cart or compatible            | :white_check_mark: |
+
+
 
 ## How to use it
 
@@ -59,7 +57,7 @@ https://github.com/X-death25/MD_Dumper/tree/main/open-hardware
 
 Read mode :
 ```
--read auto  :  Auto Mode
+-read auto  :  Auto Mode-
 -read bankswitch  :  Bankswitch Mode
 -read manual (32|64|128|256|512|1024|2048|4096) (gg|md|sms) :  Manual Mode
 -backup auto  :  Auto Mode
