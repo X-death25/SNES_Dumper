@@ -14,11 +14,11 @@ Supported Features
 | ROM Dump up to 32 MEG  HiRom                | :white_check_mark: |
 | ROM Dump up to 64 MEG  Ex-HiRom             | :white_check_mark: |
 | ROM Dump up to 16 MEG  DSP 1-2-3            | :white_check_mark: |
-| ROM Dump up to 32 MEG  SDD1                 | :white_check_mark: |
+| ROM Dump up to 16 MEG  Super FX 1 , 2       | :white_check_mark: |
+| ROM Dump up to 48 MEG  S-DD1                | :white_check_mark: |
 | ROM Dump up to 32 MEG  SA-1                 | :arrows_counterclockwise: |
 | Rewrite LoRom cart or compatible            | :white_check_mark: |
 | Rewrite HiRom cart or compatible            | :white_check_mark: |
-
 
 
 ## How to use it
