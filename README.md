@@ -25,7 +25,7 @@ Supported Features
 
 You could find all documentation in the wiki here :
 
-https://github.com/X-death25/MD_Dumper/wiki
+https://github.com/X-death25/SNES_Dumper/wiki
 
 ## Preview
 
@@ -36,20 +36,15 @@ https://github.com/X-death25/MD_Dumper/wiki
 ## Where i can buy it ?
 
 This product is an unofficial and
-unlicensed hardware release for the SEGA
-Mega Drive console, and is not affiliated
-with SEGA Enterprises Ltd, SEGA
-Corporation, or SEGA Holdings Co.
-SEGA® and MEGA DRIVE are trademarks
-of SEGA Holdings Co.
+unlicensed hardware release for the NINTENDO
+Super NES / Super Famicom console, and is not affiliated
+with Nintendo Enterprises.
 
 You can buy last version of hardware in my Tindie page <br>
 
 https://www.tindie.com/products/xdeath/usb-megadrive-genesis-cartridge-readerwriter/
 
-If you are a maker you can also use the open source version in the Open-hardware folder <br>
 
-https://github.com/X-death25/MD_Dumper/tree/main/open-hardware
 
 ## Commands
 
@@ -58,19 +53,7 @@ https://github.com/X-death25/MD_Dumper/tree/main/open-hardware
 Read mode :
 ```
 -read auto  :  Auto Mode-
--read bankswitch  :  Bankswitch Mode
--read manual (32|64|128|256|512|1024|2048|4096) (gg|md|sms) :  Manual Mode
--backup auto  :  Auto Mode
--backup bankswitch  :  Bankswitch Mode
--backup manual (8192|32768) (serial_spi|serial_i2c|parallel_sram):  Read Save Data
-```
 
-Write mode :
-```
--erase_flash  :  Erase Flash Memory
--write_flash  :  Write Flash Memory
--erase_memory (serial_spi|serial_i2c|parallel_sram) :  Erase Save Memory
--restore_memory (serial_spi|serial_i2c|parallel_sram)  :  Write Save Memory
 ```
 
 ### GUI Mode
@@ -80,33 +63,16 @@ Write mode :
 
 ## Special thanks
 
-- paulfertser for his code on how to use usb hid on stm32 , it's the first piece of my first version of md dumper https://github.com/paulfertser/stm32-tx-hid
+- paulfertser for his code on how to use usb hid on stm32 , it's the first piece of my first version of dumper https://github.com/paulfertser/stm32-tx-hid
 - libopencm3 for the very cool STM32 dev lib.
-- ichigobankai for some low level arm optimisation and the Master System / Game gear part. 
-- Marv17 for a lot of hardware and software test.
+- ichigobankai for some low level arm optimisation.
 - Jackobo (Takeshi Imbert) for the beautiful GUI.
-- Sik for his wonderfull website about Megadrive hardware / dev info https://plutiedev.com/
-- Libcsv used in the software https://github.com/rgamble/libcsv  author : rgamble
-
-Linked Repositories
------
-
-My other projects related to Megadrive Hardware/Software developpement <br>
-
--=X-Flash=- <br>
-Altera EPM240 CPLD based Megadrive cartridge used for advanced research <br>
-https://github.com/X-death25/X-Flash <br>
-
--=X-open ED=- <br>
-Open Source Alternative to Open-Everdrive BIOS <br>
-https://github.com/X-death25/X-open-ED <br>
-
+- mousebitelabs wonderfull website about Super Nintendo hardware / cartridge info https://mousebitelabs.com/2019/05/18/custom-pcb-explanation/
 
 ## Licenses:
 
 - Software : GPL v3
 - Hardware (Tindie Version ) : Firmware is closed source
-- Hardware (open-hardware folder ) : GPL v3
 - Documentation / WIKI : CC0 1.0
 
 You can find copy of GPL v3 and CC0 1.0 in the licences folder
