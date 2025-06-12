@@ -1,10 +1,10 @@
 /*
 
-MD Dumper CLI Version
-X-death - 01/2025
+SNES Dumper CLI Version
+X-death - 06/2025
 
-MD Dumper SDL GUI Version
-Jackobo Le Chocobo (Akina Usagi) - 31/08/2024
+SNES Dumper SDL GUI Version
+Jackobo Le Chocobo (Akina Usagi) - 
 
 */
 
@@ -13,10 +13,9 @@ Jackobo Le Chocobo (Akina Usagi) - 31/08/2024
 #include <stdlib.h>
 #include <string.h>
 
-//MD Dumper Functions
+//SNES Dumper Functions
 #include "md_dumper_main.h"
-#include "md_dumper_read.h"
-#include "md_dumper_write.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +59,7 @@ int main(int argc, char *argv[])
 
 		//Init Window
 		SDL_Init(SDL_INIT_VIDEO);
-		SDL_Window * window = SDL_CreateWindow("MD Dumper version January 2025", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 424*gui_scale, 240*gui_scale, 0);
+		SDL_Window * window = SDL_CreateWindow("SNES Dumper version 2025", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 424*gui_scale, 240*gui_scale, 0);
 		SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
 		
 		SDL_Surface * image1;
@@ -540,187 +539,21 @@ int main(int argc, char *argv[])
 	else
 	{
 		printf("\n");
-		printf("----------------------------------------------------------------\n");
-		printf("8b   d8 888b.      888b. 8    8 8b   d8 888b. 8888 888b. \n");
-		printf("8YbmdP8 8   8      8   8 8    8 8YbmdP8 8  .8 8www 8  .8 \n");
-		printf("8     8 8   8 wwww 8   8 8b..d8 8     8 8wwP' 8    8wwK' \n");
-		printf("8     8 888P'      888P' `Y88P' 8     8 8     8888 8  Yb \n");
-		printf("----------------------------------------------------------------\n");
+		printf("------------------------------------------------------------------\n");
+		printf("  ____  _   _ _____ ____    ____                                  \n");
+		printf(" / ___|| \ | | ____/ ___|  |  _ \ _   _ _ __ ___  _ __   ___ _ __ \n");
+		printf(" \___ \|  \| |  _| \___ \  | | | | | | | '_ ` _ \| '_ \ / _ \ '__|\n");
+		printf("  ___) | |\  | |___ ___) | | |_| | |_| | | | | | | |_) |  __/ |   \n");
+		printf(" |____/|_| \_|_____|____/  |____/ \__,_|_| |_| |_| .__/ \___|_|   \n");
+		printf("                                                 |_|              \n");
+		printf("------------------------------------------------------------------\n");
 		printf("\n");
-		printf("Release : 02 Nov. 2024 \n");
+		printf("Release : Aug. 2025 \n");
 		printf("\n");
 	}
 
 	//LibUsb : Init & Detect
 	if(Detect_Device()!=0)		return 1;
-	
-	//LibCsv : Init & Open files
-	if(Open_CSV_Files()!=0)		return 1;
-
-	//Read Game Header/Infos
-	Game_Header_Infos();
-
-	// Vérifier le nombre d'arguments
-	if(use_gui==0)						//Vérifier que nous utilisons le mode CLI
-	{
-		//Lecture de la ROM
-		if (strcmp(argv[1], "-read") == 0)
-		{
-			if (strcmp(argv[2], "auto")==0)
-			{
-				gui_tab_mode=0;
-				data_type=0;
-				dump_mode=0;
-			}
-			else  if (strcmp(argv[2], "manual")==0)
-			{
-				gui_tab_mode=0;
-				data_type=0;
-				dump_mode=1;
-				
-				if (strcmp(argv[3], "32") == 0)						dump_rom_size_opts = 0;
-				else if (strcmp(argv[3], "64") == 0)					dump_rom_size_opts = 1;
-				else if (strcmp(argv[3], "128") == 0)					dump_rom_size_opts = 2;
-				else if (strcmp(argv[3], "256") == 0)					dump_rom_size_opts = 3;
-				else if (strcmp(argv[3], "512") == 0)					dump_rom_size_opts = 4;
-				else if (strcmp(argv[3], "1024") == 0)					dump_rom_size_opts = 5;
-				else if (strcmp(argv[3], "2048") == 0)					dump_rom_size_opts = 6;
-				else if (strcmp(argv[3], "4096") == 0)					dump_rom_size_opts = 7;
-				else if (strcmp(argv[3], "8192") == 0)					dump_rom_size_opts = 8;
-				else
-				{
-					printf("You must write one of the following values to set the game size : 32, 64, 128, 256, 512, 1024, 2048, 4096.\n");
-					return 1;
-				}
-				
-				if (strcmp(argv[4], "gg") == 0)						dump_cart_mode_opts = 0;
-				else if (strcmp(argv[4], "md") == 0)					dump_cart_mode_opts = 1;
-				else if (strcmp(argv[4], "sms") == 0)					dump_cart_mode_opts = 2;
-				else
-				{
-					printf("You must write one of the following values to set the cartridge type : gg, md or sms.\n");
-					return 1;
-				}
-			}
-			else if (strcmp(argv[2], "bankswitch") == 0)
-			{
-				gui_tab_mode=0;
-				data_type=0;
-				dump_mode=2;
-			}
-			else
-			{
-				printf("You must select 'a' (Auto), 'b' (Bankswitch) or 'm' (Manual).\n");
-				return 1;
-			}
-		}
-		else if (strcmp(argv[1], "-backup") == 0)
-		{
-			if (strcmp(argv[2], "auto")==0)
-			{
-				gui_tab_mode=0;
-				data_type=1;
-				dump_mode=0;
-			}
-			else  if (strcmp(argv[2], "manual")==0)
-			{
-				gui_tab_mode=0;
-				data_type=1;
-				dump_mode=1;
-				
-				if (strcmp(argv[3], "8192") == 0)					dump_sram_size_opts = 0;
-				else if (strcmp(argv[3], "32768") == 0)					dump_sram_size_opts = 1;
-				else
-				{
-					printf("You must write one of the following values to set the game size : 8192, 32768.\n");
-					return 1;
-				}
-				
-				if (strcmp(argv[4], "parallel_sram") == 0)				dump_sram_type_opts = 0;
-				else if (strcmp(argv[4], "serial_i2c") == 0)				dump_sram_type_opts = 1;
-				else if (strcmp(argv[4], "serial_spi") == 0)				dump_sram_type_opts = 2;
-				else
-				{
-					printf("You must write one of the following values to set the cartridge type : parallel_sram, serial_i2c or serial_spi.\n");
-					return 1;
-				}
-			}
-			else if (strcmp(argv[2], "bankswitch") == 0)
-			{
-				gui_tab_mode=0;
-				data_type=1;
-				dump_mode=2;
-			}
-			else
-			{
-				printf("You must select 'a' (Auto), 'b' (Bankswitch) or 'm' (Manual).\n");
-				return 1;
-			}
-		}
-		else if (strcmp(argv[1], "-erase_flash") == 0)
-		{
-			gui_tab_mode=1;
-			data_type=0;
-			erase_or_write=0;
-		}
-		else if (strcmp(argv[1], "-write_flash") == 0)
-		{
-			gui_tab_mode=1;
-			data_type=0;
-			erase_or_write=1;
-		}
-		else if (strcmp(argv[1], "-erase_memory") == 0)
-		{
-			gui_tab_mode=1;
-			data_type=1;
-			erase_or_write=0;
-			
-			if (strcmp(argv[2], "serial_spi") == 0)						dump_sram_type_opts = 2;
-			else if (strcmp(argv[2], "serial_i2c") == 0)					dump_sram_type_opts = 1;
-			else if (strcmp(argv[2], "parallel_sram") == 0)					dump_sram_type_opts = 0;
-			else
-			{
-				printf("You must write one of the following values to select the save type : serial_spi, serial_i2c, parallel_sram.\n");
-				return 1;
-			}
-		}
-		else if (strcmp(argv[1], "-write_memory") == 0)
-		{
-			gui_tab_mode=1;
-			data_type=1;
-			erase_or_write=1;
-			
-			if (strcmp(argv[2], "serial_spi") == 0)						dump_sram_type_opts = 2;
-			else if (strcmp(argv[2], "serial_i2c") == 0)					dump_sram_type_opts = 1;
-			else if (strcmp(argv[2], "parallel_sram") == 0)					dump_sram_type_opts = 0;
-			else
-			{
-				printf("You must write one of the following values to select the save type : serial_spi, serial_i2c, parallel_sram.\n");
-				return 1;
-			}
-		}
-		//Erreur
-		else
-		{
-			printf("You must write '-read', '-backup', '-erase_flash', '-write_flash', '-erase_memory' or '-write_memory' .\n");
-			return 1;
-		}
-	}
-
-	if ( gui_tab_mode==0 && data_type==0 && dump_mode==0 )				Read_ROM_Auto();
-	else if ( gui_tab_mode==0 && data_type==0 && dump_mode==1 )			Read_ROM_Manual();
-	else if ( gui_tab_mode==0 && data_type==0 && dump_mode==2 )			Read_ROM_Bankswitch();
-	else if ( gui_tab_mode==0 && data_type==1 && dump_mode==0 )			Read_RAM_Auto();
-	else if ( gui_tab_mode==0 && data_type==1 && dump_mode==1 )			Read_RAM_Manual();
-	else if ( gui_tab_mode==0 && data_type==1 && dump_mode==2 )			Read_RAM_Bankswitch();
-	else if ( gui_tab_mode==1 && data_type==0 && erase_or_write==0 )		Erase_Flash();
-	else if ( gui_tab_mode==1 && data_type==0 && erase_or_write==1 )		Write_Flash();
-	else if ( gui_tab_mode==1 && data_type==1 && erase_or_write==0 )		Erase_RAM();
-	else if ( gui_tab_mode==1 && data_type==1 && erase_or_write==1 )		Write_RAM();
-	
-	libusb_release_interface(handle,if_num);
-	libusb_close(handle);
-	libusb_exit(context);
 	
 	return 0;
 }
