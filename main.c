@@ -14,7 +14,7 @@ Jackobo Le Chocobo (Akina Usagi) -
 #include <string.h>
 
 //SNES Dumper Functions
-#include "md_dumper_main.h"
+#include "snes_dumper_main.h"
 
 
 int main(int argc, char *argv[])
