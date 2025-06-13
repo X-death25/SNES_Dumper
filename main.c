@@ -552,8 +552,60 @@ int main(int argc, char *argv[])
 		printf("\n");
 	}
 
-	//LibUsb : Init & Detect
-	if(Detect_Device()!=0)		return 1;
+ printf("\n");
+    printf(" ---------------------------------\n");
+    printf("    SNES Dumper USB2 Software     \n");
+    printf(" ---------------------------------\n");
+    printf("\n");
+
+    printf("Init LibUSB... \n");
+
+    /* Initialise libusb. */
+
+    res = libusb_init(0);
+    if (res != 0)
+    {
+        fprintf(stderr, "Error initialising libusb.\n");
+        return 1;
+    }
+
+    printf("LibUSB Init Sucessfully ! \n");
+
+
+    printf("Detecting SNES Dumper... \n");
+
+    /* Get the first device with the matching Vendor ID and Product ID. If
+     * intending to allow multiple demo boards to be connected at once, you
+     * will need to use libusb_get_device_list() instead. Refer to the libusb
+     * documentation for details. */
+
+    handle = libusb_open_device_with_vid_pid(0, 0x0483, 0x5740);
+
+    if (!handle)
+    {
+        fprintf(stderr, "Unable to open device.\n");
+        return 1;
+    }
+
+    /* Claim interface #0. */
+
+    res = libusb_claim_interface(handle, 0);
+    if (res != 0)
+    {
+        res = libusb_claim_interface(handle, 1);
+        if (res != 0)
+        {
+            printf("Error claiming interface.\n");
+            return 1;
+        }
+    }
+
+// Clean Buffer
+    for (i = 0; i < 64; i++)
+    {
+        usb_buffer_in[i]=0x00;
+        usb_buffer_out[i]=0x00;
+    }
 
 // At this step we can try to read the buffer wake up Snes Dumper
 
@@ -590,6 +642,7 @@ int main(int argc, char *argv[])
         usb_buffer_in[i]=0x00;
         usb_buffer_out[i]=0x00;
     }
+// Now try to detect cartridge type
 // Now try to detect cartridge type
     printf("\nDetecting Cartridge type... ");
     while ( Cartridge_Detected == 0  )
