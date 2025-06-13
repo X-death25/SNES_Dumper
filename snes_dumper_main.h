@@ -4,7 +4,6 @@
 #include <SDL_image.h>											//For PNG loading files
 #define printf SDL_Log
 
-int use_gui=0;
 int gui_tab_mode=0;
 int dump_mode=0;
 int data_type=0;
@@ -14,6 +13,8 @@ int dump_sram_size_opts=0;
 int dump_sram_type_opts=0;
 int erase_or_write=0;
 #endif
+
+int use_gui=0;
 
 #include <libusb.h>												//Library for detecting the SNES Dumper device
 
@@ -190,6 +191,9 @@ ssize_t count;													// holding number of devices in list
 	}
 #endif
 
+void Display_Help(char *prog_name)
+{
+}
 
 int Detect_Device(void)
 {		
