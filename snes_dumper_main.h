@@ -144,6 +144,15 @@ ssize_t count;													// holding number of devices in list
         0x64F0, 0x0B04,  // Dragon Ball Z Hyper Dimension (Japan) || SA-1
     };
 
+    unsigned char Cartridge_Detected=0;
+    unsigned char Cartridge_Type=0;
+    unsigned char Game_Name[21];
+    unsigned char Rom_Type=0;
+    unsigned long Rom_Size=0;
+    unsigned long Ram_Size=0;
+    unsigned char Rom_Version=0;
+    unsigned char Rom_Region=0;
+    int checksum_header = 0;
 
 
 //Timer functions according to Operating Systems
