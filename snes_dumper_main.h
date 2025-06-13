@@ -3,7 +3,18 @@
 #include <SDL.h>												//Main Library file
 #include <SDL_image.h>											//For PNG loading files
 #define printf SDL_Log
+
+int gui_tab_mode=0;
+int dump_mode=0;
+int data_type=0;
+int dump_rom_size_opts=0;
+int dump_cart_mode_opts=0;
+int dump_sram_size_opts=0;
+int dump_sram_type_opts=0;
+int erase_or_write=0;
 #endif
+
+int use_gui=0;
 
 #include <libusb.h>												//Library for detecting the SNES Dumper device
 
@@ -180,6 +191,9 @@ ssize_t count;													// holding number of devices in list
 	}
 #endif
 
+void Display_Help(char *prog_name)
+{
+}
 
 int Detect_Device(void)
 {		
@@ -265,12 +279,11 @@ int Detect_Device(void)
 	}
 
 	// Clean Buffer
-	for (i = 0; i < 64; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		usb_buffer_in[i]=0x00;
 		usb_buffer_out[i]=0x00;
 	}
-	i=0;
 	
 	return 0;
 }

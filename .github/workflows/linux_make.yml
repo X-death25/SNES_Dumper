@@ -51,5 +51,5 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: MD_Dumper_Linux
+        name: SNES_Dumper_Linux
         path: ./Linux_Build
