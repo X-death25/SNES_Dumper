@@ -72,6 +72,55 @@ ssize_t count;													// holding number of devices in list
 
 // SNES Dumper Var
 
+    // Dumper Specific Var
+
+    unsigned long i=0;
+    unsigned long j=0;
+    unsigned long k=0;
+    int choixMenu=0;
+    unsigned long address=0;
+    int game_size=0;
+    unsigned char *BufferROM;
+    unsigned char *Buffer1;
+    unsigned char *Buffer2;
+    unsigned long save_size = 0;
+    unsigned char *buffer_save = NULL;
+    unsigned char buffer_temp1[32];
+    unsigned char buffer_temp2[32];
+    unsigned char Retry=0;
+    unsigned char dump_name[64];
+    unsigned char Flash_type=0;
+
+    // Rom Header info
+
+
+    unsigned char Cartridge_Detected=0;
+    unsigned char Cartridge_Type=0;
+    unsigned char Game_Name[21];
+    unsigned char Rom_Type=0;
+    unsigned long Rom_Size=0;
+    unsigned long Ram_Size=0;
+    unsigned char Rom_Version=0;
+    unsigned char Rom_Region=0;
+    int checksum_header = 0;
+
+
+    // Custom Cartridges specific var
+
+    unsigned char cx4Type=0;
+    unsigned char SDD1_ROM_Register=0;
+
+    // Flash specific var
+
+    unsigned char manufacturer_id=0;
+    unsigned char chip_id=0;
+    unsigned short flash_id=0;
+    unsigned short rom_id=0;
+    const char * wheel[] = { "-","\\","|","/"}; //erase wheel
+
+    // File manipulation Specific Var
+
+    FILE *myfile;
 
 //*********************************************************
 // SNES SPECIAL Cartridge LOOKUP TABLE
@@ -143,34 +192,6 @@ ssize_t count;													// holding number of devices in list
         0x4575, 0x0B04,  // Super Mario RPG (Japan) || SA-1
         0x64F0, 0x0B04,  // Dragon Ball Z Hyper Dimension (Japan) || SA-1
     };
-
-    unsigned long i=0;
-    unsigned long j=0;
-    unsigned long k=0;
-    int choixMenu=0;
-    unsigned long address=0;
-    int game_size=0;
-    unsigned char *BufferROM;
-    unsigned char *Buffer1;
-    unsigned char *Buffer2;
-    unsigned long save_size = 0;
-    unsigned char *buffer_save = NULL;
-    unsigned char buffer_temp1[32];
-    unsigned char buffer_temp2[32];
-    unsigned char Retry=0;
-    unsigned char dump_name[64];
-    unsigned char Flash_type=0;
-
-    unsigned char Cartridge_Detected=0;
-    unsigned char Cartridge_Type=0;
-    unsigned char Game_Name[21];
-    unsigned char Rom_Type=0;
-    unsigned long Rom_Size=0;
-    unsigned long Ram_Size=0;
-    unsigned char Rom_Version=0;
-    unsigned char Rom_Region=0;
-    int checksum_header = 0;
-
 
 //Timer functions according to Operating Systems
 
