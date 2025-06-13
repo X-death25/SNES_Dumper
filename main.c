@@ -573,8 +573,7 @@ int main(int argc, char *argv[])
 
     printf("\nDisplaying USB IN buffer\n\n");
 
-    intj=0;	
-    for (int i = 0; i < 64; i++)
+    for (i = 0; i < 64; i++)
     {
         printf("%02X ",usb_buffer_in[i]);
         j++;
@@ -586,76 +585,21 @@ int main(int argc, char *argv[])
     }
 
 
-    for (int i = 0; i < 64; i++)
+    for (i = 0; i < 64; i++)
     {
         usb_buffer_in[i]=0x00;
         usb_buffer_out[i]=0x00;
     }
 // Now try to detect cartridge type
     printf("\nDetecting Cartridge type... ");
-    /*
     while ( Cartridge_Detected == 0  )
     {
-
-    // Now try to read ROM SNES Header
-
-    if ( Cartridge_Type == 2  ) { address=32688;}
-    if ( Cartridge_Type == 3  ) { address=32688;}
-    if ( Cartridge_Type == 4  ) { address=65456;}
-
-     //printf("Cartridge Type : %d",Cartridge_Type);
-    usb_buffer_out[0] = READ_SNES;
-    usb_buffer_out[1] = address & 0xFF ;
-    usb_buffer_out[2] = (address & 0xFF00)>>8;
-    usb_buffer_out[3]=(address & 0xFF0000)>>16;
-    usb_buffer_out[4] = 0; // Slow Mode
-    usb_buffer_out[5] = Cartridge_Type;
-    libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
-    libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
-
-    printf("\nDisplaying USB IN buffer\n\n");
-
-       for (i = 0; i < 64; i++)
-        {
-            printf("%02X ",usb_buffer_in[i]);
-    		j++;
-    		if (j==16){printf("\n");j=0;}
-        }
-
-    //printf("\nDetecting Cartridge type... ");
-    // Try to detect LoRom Cartridge
-
-    if ( usb_buffer_in[37] == 0x20 && Cartridge_Type == 2 ) { printf("\nCartridge Detected : LoROM <= 8Mb ");Cartridge_Detected = 2;}
-    if ( usb_buffer_in[37] == 0x32 && Cartridge_Type == 2 ) { printf("\nCartridge Detected : LoROM <= 8Mb ");Cartridge_Detected = 2;}
-    if ( usb_buffer_in[37] == 0x20 && Cartridge_Type == 3 ) { printf("\nCartridge Detected : LoROM >= 16Mb ");Cartridge_Detected = 3;}
-    if ( usb_buffer_in[37] == 0x30 && Cartridge_Type == 3 ) { printf("\nCartridge Detected : LoROM >= 16Mb ");Cartridge_Detected = 3;}
-    if ( (usb_buffer_in[37] == 0x31 || 0x21 ) && Cartridge_Type == 4 ) { printf("\nCartridge Detected : HiROM/ExHirom");Cartridge_Detected = 4;}
-    if ( Cartridge_Detected == 0 ){ Cartridge_Type++;}
-
-
-    if ( Cartridge_Type == 5) {Cartridge_Detected = 10;Cartridge_Type =0; printf("\nUnknown Cartridge type warning header will be display incorrect value");}
-    // Try to detect HiRom Cartridge
-
-    //printf("\nCartridge Type :  %d ",Cartridge_Type);
-    //scanf("%ld");
-
-    }
-    */
-
-
-
-    while ( Cartridge_Detected == 0  )
-    {
-
         Cartridge_Type++;
         printf("Try to detect with cartridge type %d \n",Cartridge_Type);
 
-
         if ( Cartridge_Type == 2 ) // LoROM Cartridge < 16 Mb
         {
-
             Cartridge_Type = 2;
-
             address=32688;
             //address=0;
 
@@ -709,8 +653,6 @@ int main(int argc, char *argv[])
             }
 
         }
-
-
 
         if ( Cartridge_Type == 4  ) // HiROM Cartridge
         {
@@ -898,16 +840,6 @@ int main(int argc, char *argv[])
 
 
     printf("\nCartridge Type :  %d ",Cartridge_Type);
-    /*
-    usb_buffer_out[0] = READ_SNES;
-    usb_buffer_out[1] = address & 0xFF ;
-    usb_buffer_out[2] = (address & 0xFF00)>>8;
-    usb_buffer_out[3]=(address & 0xFF0000)>>16;
-    usb_buffer_out[4] = 0; // Slow Mode
-    usb_buffer_out[5] = Cartridge_Type;
-    libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
-    libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
-    */
 
     printf("\n\n --- Cartridge INFO ---");
 
@@ -925,8 +857,8 @@ int main(int argc, char *argv[])
     {
         printf("\nROM Map : LoROM");
     }
-//if ( Rom_type == 0x20 ) {printf("\nROM Speed : SlowROM");}
-    game_size= (0x400 << usb_buffer_in[39]); // Rom Size
+
+	game_size= (0x400 << usb_buffer_in[39]); // Rom Size
     printf("\nGame Size :  %ld Ko",game_size/1024);
     printf(" / %ld Mbits",((game_size/1024)*8)/1024);
     Ram_Size= (0x400 << usb_buffer_in[40]); // Ram Size
@@ -969,7 +901,6 @@ int main(int argc, char *argv[])
     printf("\nGame Version : 1.%d ",Rom_Version);
     checksum_header = (usb_buffer_in[47]<<8) | usb_buffer_in[46];
     printf("\nHeader Checksum : %X", checksum_header);
-//printf("\nHeader Checksum : %02X%02X ",usb_buffer_in[47],usb_buffer_in[46]);
     printf("\nComplement Checksum : %02X%02X ",usb_buffer_in[45],usb_buffer_in[44]);
 
 // Special Cartridges detection code
@@ -1078,13 +1009,6 @@ int main(int argc, char *argv[])
     case 1: // READ SNES ROM
 
         choixMenu=0;
-        /* printf(" 1) Auto (from header)\n");
-         printf(" 2) Manual\n");
-         printf(" 3) Slow Mode\n");
-         printf(" Your choice: ");
-         scanf("%d", &choixMenu);
-         if(choixMenu==3){usb_buffer_out[4]=1; } // in slow mode first
-         else {game_size = Rom_Size;usb_buffer_out[4]=0; }*/
 
         printf("\n --- DUMP Mode : ---\n");
         printf(" 11) Automatic mode ( from header ) \n");
@@ -1477,142 +1401,7 @@ int main(int argc, char *argv[])
             fwrite(BufferROM,1,game_size, myfile);
             fclose(myfile);
             return 0;
-
-
-
-            /* usb_buffer_out[0] = READ_SNES;
-             usb_buffer_out[1]=address & 0xFF;
-             usb_buffer_out[2]=(address & 0xFF00)>>8;
-             usb_buffer_out[3]=(address & 0xFF0000)>>16;
-             usb_buffer_out[4]=1; // high speed mod
-             usb_buffer_out[5] = Cartridge_Type;
-
-             libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes,0);
-             printf("ROM dump in progress...\n");
-
-             res = libusb_bulk_transfer(handle, 0x82,BufferROM,game_size, &numBytes,0);
-             if (res != 0)
-             {
-                 printf("Error \n");
-                 return 1;
-             }
-            myfile = fopen("dump_rom.sfc","wb");
-            fwrite(BufferROM,1,game_size, myfile);
-            fclose(myfile);
-            return 0;*/
-
-
         }
-
-
-
-
-
-
-
-
-    // Start Dump in slow mode
-
-    /*	while ( i< game_size)
-        {
-    		usb_buffer_out[0] = READ_SNES;
-    usb_buffer_out[1] = address & 0xFF ;
-    usb_buffer_out[2] = (address & 0xFF00)>>8;
-    usb_buffer_out[3]=(address & 0xFF0000)>>16;
-    usb_buffer_out[4] = 0; // Slow Mode
-    usb_buffer_out[5] = Cartridge_Type;
-            libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
-            libusb_bulk_transfer(handle, 0x82,(BufferROM+i),64, &numBytes, 60000);
-            address +=64; //next adr
-            i+=64;
-
-            printf("\r ROM dump in progress: %ld%%", ((100 * i)/game_size));
-            fflush(stdout);
-        }*/
-
-
-    /*if ( Cartridge_Type == 4 || 5 )
-    {
-
-
-        usb_buffer_out[0] = READ_SNES;
-        usb_buffer_out[1]=address & 0xFF;
-        usb_buffer_out[2]=(address & 0xFF00)>>8;
-        usb_buffer_out[3]=(address & 0xFF0000)>>16;
-        usb_buffer_out[4]=1; // high speed mod
-        usb_buffer_out[5] = Cartridge_Type;
-
-        libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes,0);
-        printf("ROM dump in progress...\n");
-
-        res = libusb_bulk_transfer(handle, 0x82,BufferROM,game_size, &numBytes,0);
-        if (res != 0)
-        {
-            printf("Error \n");
-            return 1;
-        }
-    }*/
-
-    /* if ( Cartridge_Type == 6 )
-     {
-
-
-    	address=0;
-
-         usb_buffer_out[0] = READ_SNES;
-         usb_buffer_out[1]=address & 0xFF;
-         usb_buffer_out[2]=(address & 0xFF00)>>8;
-         usb_buffer_out[3]=(address & 0xFF0000)>>16;
-         usb_buffer_out[4]=1; // high speed mode
-         usb_buffer_out[5] = 6;
-
-         libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
-         printf("ROM dump in progress...\n");
-
-         res = libusb_bulk_transfer(handle, 0x82,BufferROM,game_size, &numBytes, 60000);
-         if (res != 0)
-         {
-             printf("Error \n");
-             return 1;
-         }
-
-
-
-
-
-
-
-     }
-
-
-     /*if ( Hardwaretype == 1 && Hardwaredata == 0x0106 ) // 48 Mb ExHirom Cartridge Tricks
-
-      {
-     	 // First Clean 48Mb Buffer
-     	 Buffer1 = (unsigned char*)malloc(1024*2048);
-     	 Buffer2 = (unsigned char*)malloc(1024*4096);
-     	 i=0;
-     		for (i=0; i<1024*4096; i++)
-     			{
-     				Buffer2[i]=0x00;
-     			}
-     	 i=0;
-     		for (i=0; i<1024*2048; i++)
-     			{
-     				Buffer1[i]=0x00;
-     			}
-     memcpy( Buffer1,BufferROM,1024*2048);
-     memcpy( Buffer2,BufferROM+1024*2048,1024*4096);
-     //	printf("\nFirst Mux Ok !");
-     memcpy( BufferROM,Buffer2,1024*4096);
-     memcpy( BufferROM+1024*4096,Buffer1,1024*2048);
-     //printf("\nMux Ok !");
-     }*/
-
-    /* myfile = fopen("dump_rom.sfc","wb");
-     fwrite(BufferROM,1,game_size, myfile);
-     fclose(myfile);
-    break;*/
 
     case 2: // DUMP SNES Save
         choixMenu=0;
