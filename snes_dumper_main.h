@@ -270,7 +270,6 @@ int Detect_Device(void)
 		usb_buffer_in[i]=0x00;
 		usb_buffer_out[i]=0x00;
 	}
-	i=0;
 	
 	return 0;
 }
