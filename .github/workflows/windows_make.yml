@@ -51,5 +51,5 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: MD_Dumper_Windows
+        name: SNES_Dumper_Windows
         path: ./Windows_Build
