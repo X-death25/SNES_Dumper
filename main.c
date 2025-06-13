@@ -574,7 +574,8 @@ int main(int argc, char *argv[])
 
     printf("\nDisplaying USB IN buffer\n\n");
 
-    for (i = 0; i < 64; i++)
+    intj=0;	
+    for (int i = 0; i < 64; i++)
     {
         printf("%02X ",usb_buffer_in[i]);
         j++;
@@ -586,7 +587,7 @@ int main(int argc, char *argv[])
     }
 
 
-    for (i = 0; i < 64; i++)
+    for (int i = 0; i < 64; i++)
     {
         usb_buffer_in[i]=0x00;
         usb_buffer_out[i]=0x00;
