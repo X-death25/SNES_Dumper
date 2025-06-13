@@ -12,6 +12,7 @@ Jackobo Le Chocobo (Akina Usagi) -
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 //SNES Dumper Functions
 #include "snes_dumper_main.h"
@@ -20,15 +21,6 @@ Jackobo Le Chocobo (Akina Usagi) -
 int main(int argc, char *argv[])
 {
 #ifdef SDLGUI
-	int use_gui=0;
-	int gui_tab_mode=0;
-	int dump_mode=0;
-	int data_type=0;
-	int dump_rom_size_opts=0;
-	int dump_cart_mode_opts=0;
-	int dump_sram_size_opts=0;
-	int dump_sram_type_opts=0;
-	int erase_or_write=0;
 	SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO); //Display informations on console
 #endif
 
