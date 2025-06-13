@@ -265,7 +265,7 @@ int Detect_Device(void)
 	}
 
 	// Clean Buffer
-	for (i = 0; i < 64; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		usb_buffer_in[i]=0x00;
 		usb_buffer_out[i]=0x00;
