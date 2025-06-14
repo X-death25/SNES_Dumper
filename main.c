@@ -984,8 +984,10 @@ int main(int argc, char *argv[])
 
     }
 
-    //  Cartridge_Type = 2;
-
+    if (checksum_header == 0xE30C || checksum_header == 0x3163 || checksum_header == 0xCCF7) // Pilotwings (E), Pilotwings (U),  Pilotwings (J)
+	{
+       Cartridge_Type = 2;
+    }
 
     printf("\nCartridge type : %ld \n",Cartridge_Type);
 
