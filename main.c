@@ -801,7 +801,23 @@ int main()
 
     }
 
-    //  Cartridge_Type = 2;
+    //  Manual Correction table 
+
+
+ if (checksum_header == 0xE30C) // Pilotwings (E)
+	{
+       Cartridge_Type = 2;
+    }
+
+ if (checksum_header == 0x3163) // Pilotwings (U)
+	{
+       Cartridge_Type = 2;
+    }
+
+ if (checksum_header == 0xCCF7) // Pilotwings (J)
+	{
+       Cartridge_Type = 2;
+    }
 
 
     printf("\nCartridge type : %ld \n",Cartridge_Type);
@@ -2083,6 +2099,7 @@ int main()
 
 
     }
+
 
 
 
