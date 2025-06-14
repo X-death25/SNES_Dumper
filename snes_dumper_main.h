@@ -331,6 +331,41 @@ int Detect_Device(void)
 		usb_buffer_in[i]=0x00;
 		usb_buffer_out[i]=0x00;
 	}
+
+	// At this step we can try to read the buffer wake up Snes Dumper
+	usb_buffer_out[0] = WAKEUP;// Affect request to  WakeUP Command
+	libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 0); // Send Packets to SNES Dumper
+	libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 0); // Receive packets from SNES Dumper
+	
+	printf("SNES Dumper %.*s",6, (char *)usb_buffer_in);
+	printf("\n");
+	printf("Hardware Firmware version : %d", usb_buffer_in[20]);
+	printf(".%d\n", usb_buffer_in[21]);
+	printf("Software Firmware version : %d",MAX_VERSION);
+	printf(".%d\n",MIN_VERSION);
+
+	printf("\nDisplaying USB IN buffer\n\n");
+	for (i = 0; i < 64; i++)
+	{
+		printf("%02X ",usb_buffer_in[i]);
+		j++;
+        	if (j==16)
+		{
+			printf("\n");
+			j=0;
+		}
+    	}
+
+	for (i = 0; i < 64; i++)
+		{
+        	usb_buffer_in[i]=0x00;
+        	usb_buffer_out[i]=0x00;
+    		}
 	
 	return 0;
+}
+
+void Game_Infos(void)
+{
+			
 }
