@@ -24,16 +24,16 @@ int main(int argc, char *argv[])
 	SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO); //Display informations on console
 #endif
 
-	if(argc == 1)
+	 if (strcmp(argv[1], "-help") == 0)
 	{
 		Display_Help(argv[0]);
 		return 1;
 	}
-	else if (strcmp(argv[1], "-help") == 0)
+	/*else if(argc == 1)
 	{
 		Display_Help(argv[0]);
 		return 1;
-	}
+	}*/
 
 #ifdef SDLGUI
 	//Using GUI Mode ?
