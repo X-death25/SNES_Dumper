@@ -72,6 +72,55 @@ ssize_t count;													// holding number of devices in list
 
 // SNES Dumper Var
 
+    // Dumper Specific Var
+
+    unsigned long i=0;
+    unsigned long j=0;
+    unsigned long k=0;
+    int choixMenu=0;
+    unsigned long address=0;
+    int game_size=0;
+    unsigned char *BufferROM;
+    unsigned char *Buffer1;
+    unsigned char *Buffer2;
+    unsigned long save_size = 0;
+    unsigned char *buffer_save = NULL;
+    unsigned char buffer_temp1[32];
+    unsigned char buffer_temp2[32];
+    unsigned char Retry=0;
+    unsigned char dump_name[64];
+    unsigned char Flash_type=0;
+
+    // Rom Header info
+
+
+    unsigned char Cartridge_Detected=0;
+    unsigned char Cartridge_Type=0;
+    unsigned char Game_Name[21];
+    unsigned char Rom_Type=0;
+    unsigned long Rom_Size=0;
+    unsigned long Ram_Size=0;
+    unsigned char Rom_Version=0;
+    unsigned char Rom_Region=0;
+    int checksum_header = 0;
+
+
+    // Custom Cartridges specific var
+
+    unsigned char cx4Type=0;
+    unsigned char SDD1_ROM_Register=0;
+
+    // Flash specific var
+
+    unsigned char manufacturer_id=0;
+    unsigned char chip_id=0;
+    unsigned short flash_id=0;
+    unsigned short rom_id=0;
+    const char * wheel[] = { "-","\\","|","/"}; //erase wheel
+
+    // File manipulation Specific Var
+
+    FILE *myfile;
 
 //*********************************************************
 // SNES SPECIAL Cartridge LOOKUP TABLE
@@ -143,8 +192,6 @@ ssize_t count;													// holding number of devices in list
         0x4575, 0x0B04,  // Super Mario RPG (Japan) || SA-1
         0x64F0, 0x0B04,  // Dragon Ball Z Hyper Dimension (Japan) || SA-1
     };
-
-
 
 //Timer functions according to Operating Systems
 
@@ -284,6 +331,319 @@ int Detect_Device(void)
 		usb_buffer_in[i]=0x00;
 		usb_buffer_out[i]=0x00;
 	}
+
+	// At this step we can try to read the buffer wake up Snes Dumper
+	usb_buffer_out[0] = WAKEUP;// Affect request to  WakeUP Command
+	libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 0); // Send Packets to SNES Dumper
+	libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 0); // Receive packets from SNES Dumper
+	
+	printf("SNES Dumper %.*s",6, (char *)usb_buffer_in);
+	printf("\n");
+	printf("Hardware Firmware version : %d", usb_buffer_in[20]);
+	printf(".%d\n", usb_buffer_in[21]);
+	printf("Software Firmware version : %d",MAX_VERSION);
+	printf(".%d\n",MIN_VERSION);
+
+	printf("\nDisplaying USB IN buffer\n\n");
+	for (i = 0; i < 64; i++)
+	{
+		printf("%02X ",usb_buffer_in[i]);
+		j++;
+        	if (j==16)
+		{
+			printf("\n");
+			j=0;
+		}
+    	}
+
+	for (i = 0; i < 64; i++)
+		{
+        	usb_buffer_in[i]=0x00;
+        	usb_buffer_out[i]=0x00;
+    		}
 	
 	return 0;
+}
+
+void Game_Infos(void)
+{
+	printf("\nDetecting Cartridge type... ");
+	while ( Cartridge_Detected == 0  )
+	{
+        	Cartridge_Type++;
+		printf("Try to detect with cartridge type %d \n",Cartridge_Type);
+	        if ( Cartridge_Type == 2 ) // LoROM Cartridge < 16 Mb
+        	{
+            		address=32688;
+			usb_buffer_out[0] = READ_SNES;
+			usb_buffer_out[1] = address & 0xFF ;
+			usb_buffer_out[2] = (address & 0xFF00)>>8;
+			usb_buffer_out[3]=(address & 0xFF0000)>>16;
+			usb_buffer_out[4] = 0; // Slow Mode
+			usb_buffer_out[5] = Cartridge_Type;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
+
+			printf("\nDisplaying USB IN buffer\n\n");
+			for (i = 0; i < 64; i++)
+			{
+				printf("%02X ",usb_buffer_in[i]);
+				j++;
+				if (j==16)
+				{
+					printf("\n");
+					j=0;
+				}
+			}
+			
+			Rom_Type=usb_buffer_in[37]; // Cartridge Format
+            		if ( Rom_Type == 0x20 || Rom_Type == 0x30) Cartridge_Detected = 1;
+          
+			Rom_Type=usb_buffer_in[38]; // Cartridge Format
+            		cx4Type = usb_buffer_in[25];
+			if ( usb_buffer_in[25] == 0x32 )	cx4Type=2;   // X2
+		        else if ( usb_buffer_in[25] == 0x33 )	cx4Type=3;   // X3
+            
+            		//printf("\nLa valeur de Cx4 Type est %d",cx4Type);
+            		if ( Rom_Type == 0xF3)
+            		{
+                		Cartridge_Detected = 1;
+                		Cartridge_Type = 6;
+            		}
+		}
+        	if ( Cartridge_Type == 4  ) // HiROM Cartridge
+        	{
+            		address=65456;
+			usb_buffer_out[0] = READ_SNES;
+			usb_buffer_out[1] = address & 0xFF ;
+			usb_buffer_out[2] = (address & 0xFF00)>>8;
+			usb_buffer_out[3]=(address & 0xFF0000)>>16;
+			usb_buffer_out[4] = 0; // Slow Mode
+			usb_buffer_out[5] = Cartridge_Type;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
+
+			printf("\nDisplaying USB IN buffer\n\n");
+			for (i = 0; i < 64; i++)
+		        {
+		        	printf("%02X ",usb_buffer_in[i]);
+		                j++;
+		                if (j==16)
+		                {
+		                	printf("\n");
+					j=0;
+		                }
+		        }
+
+			Rom_Type=usb_buffer_in[37]; // Cartridge Format
+			if ( Rom_Type == 0x21 || Rom_Type == 0x30 || Rom_Type == 0x31) Cartridge_Detected = 1;
+		}
+	        if ( Cartridge_Type == 5  ) // DSP1 Cartridge
+        	{
+			address=65456;
+			usb_buffer_out[0] = READ_SNES;
+			usb_buffer_out[1] = address & 0xFF ;
+			usb_buffer_out[2] = (address & 0xFF00)>>8;
+			usb_buffer_out[3]=(address & 0xFF0000)>>16;
+			usb_buffer_out[4] = 0; // Slow Mode
+			usb_buffer_out[5] = Cartridge_Type;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
+
+			printf("\nDisplaying USB IN buffer\n\n");
+			for (i = 0; i < 64; i++)
+		        {
+		        	printf("%02X ",usb_buffer_in[i]);
+		                j++;
+		                if (j==16)
+		                {
+		                	printf("\n");
+					j=0;
+		                }
+		        }
+			
+			Rom_Type=usb_buffer_in[37]; // Cartridge Format
+            		if ( Rom_Type == 0x21 || Rom_Type == 0x31 ) Cartridge_Detected = 1;
+		}
+		if ( Cartridge_Type ==  6 ) // Capcom CX4 Cartridge
+		{
+			address=65456;
+			usb_buffer_out[0] = READ_SNES;
+			usb_buffer_out[1] = address & 0xFF ;
+			usb_buffer_out[2] = (address & 0xFF00)>>8;
+			usb_buffer_out[3]=(address & 0xFF0000)>>16;
+			usb_buffer_out[4] = 0; // Slow Mode
+			usb_buffer_out[5] = 3;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
+
+			printf("\nDisplaying USB IN buffer\n\n");
+			for (i = 0; i < 64; i++)
+		        {
+		        	printf("%02X ",usb_buffer_in[i]);
+		                j++;
+		                if (j==16)
+		                {
+		                	printf("\n");
+					j=0;
+		                }
+		        }
+
+            		Rom_Type=usb_buffer_in[38]; // Cartridge Format
+			cx4Type = usb_buffer_in[25];
+            		if ( usb_buffer_in[25] == 0x32 )	cx4Type=2;   // X2
+            		else if ( usb_buffer_in[25] == 0x33 )	cx4Type=3;   // X3
+            
+            		if ( Rom_Type == 0xF3)
+            		{
+                		Cartridge_Detected = 1;
+                		Cartridge_Type = 6;
+            		}
+		}
+		if ( Cartridge_Type == 7  ) // ExHiROM Cartridge
+		{
+			address=65456;
+			usb_buffer_out[0] = READ_SNES;
+			usb_buffer_out[1] = address & 0xFF ;
+			usb_buffer_out[2] = (address & 0xFF00)>>8;
+			usb_buffer_out[3]=(address & 0xFF0000)>>16;
+			usb_buffer_out[4] = 0; // Slow Mode
+			usb_buffer_out[5] = Cartridge_Type;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
+
+			printf("\nDisplaying USB IN buffer\n\n");
+			for (i = 0; i < 64; i++)
+		        {
+		        	printf("%02X ",usb_buffer_in[i]);
+		                j++;
+		                if (j==16)
+		                {
+		                	printf("\n");
+					j=0;
+		                }
+		        }
+        	}
+		if ( Cartridge_Type > 15)
+        	{
+            		Cartridge_Detected = 1;
+            		printf("\nCan't detect Cartridge type...");
+        	}
+	}
+	
+	printf("\nCartridge Type :  %d ",Cartridge_Type);
+	
+	printf("\n\n --- Cartridge INFO ---");
+	for (i=0; i<22; i++)		Game_Name[i]=usb_buffer_in[i+16];   // ROM Name
+    	printf("\nGame name :  %.*s",21,(char *) Game_Name);
+	
+	Rom_Type=usb_buffer_in[37]; // Cartridge Format
+    	if ( (Rom_Type & 0x01) == 1) 	printf("\nCartridge format : HiROM");
+    	else				printf("\nROM Map : LoROM");
+	
+	game_size= (0x400 << usb_buffer_in[39]); // Rom Size
+	printf("\nGame Size :  %ld Ko / %ld Mbits",game_size/1024, ((game_size/1024)*8)/1024);
+	
+	Ram_Size= (0x400 << usb_buffer_in[40]); // Ram Size
+	if ( usb_buffer_in[40] == 0x00)
+	{
+		printf("\nRAM Size : None");
+		Ram_Size=0;
+	}
+	else
+	{
+		printf("\nRAM Size :  %ld Ko",Ram_Size/1024);
+		printf(" / %ld Kbits",(Ram_Size/1024)*8);
+	}
+	
+    	if ( (Rom_Type >> 4 & 0x03) == 3)	printf("\nROM Speed : FastROM");
+	else					printf("\nROM Speed : SlowROM");
+	
+	Rom_Region=usb_buffer_in[41];
+    	if (Rom_Region == 0)			printf("\nGame Region : Japan");
+    	else if (Rom_Region == 1)		printf("\nGame Region : USA");
+    	else if (Rom_Region == 2)		printf("\nGame Region : Europe");
+	else					printf("\nGame Region is : Unknown");
+	
+	Rom_Region=usb_buffer_in[43];
+	printf("\nGame Version : 1.%d ",Rom_Version);
+	checksum_header = (usb_buffer_in[47]<<8) | usb_buffer_in[46];
+	printf("\nHeader Checksum : %X", checksum_header);
+	printf("\nComplement Checksum : %02X%02X ",usb_buffer_in[45],usb_buffer_in[44]);
+
+	// Special Cartridges detection code
+
+	// Extra Hardware detection Specific code
+
+	// Search checksum cartridge in Custom Hardware game table
+
+	for (i = 0; i < sizeof(HardwareID)/sizeof(short); i++)
+	{
+		if ( checksum_header == HardwareID[i] )
+		{
+			Hardwaredata=HardwareID[i+1];
+			Hardwaretype = Hardwaredata >> 8;
+			Hardwaresize = Hardwaredata & 0x0F;
+			if ( Hardwaredata == 0x0705) // Daikaijuu Monogatari II
+			{
+				printf("\nSpecial Cartridge detected : ExHirom 40Mbits \n");
+				game_size=1024*Hardwaresize*1024;
+				Cartridge_Type = 7;
+			}
+			if ( Hardwaredata == 0x0706) // Tales Of Phantasia
+			{
+				printf("\nSpecial Cartridge detected : ExHirom 48Mbits \n");
+				game_size=1024*Hardwaresize*1024;
+				Cartridge_Type = 7;
+            		}
+			if ( Hardwaredata == 0x0200) // 512k (Nintendo DSP1)
+			{
+				printf("\nSpecial Cartridge detected : Nintendo DSP-1 \n");
+				Cartridge_Type = 5;
+				game_size=1024*512;
+			}
+			if ( Hardwaredata == 0x0201) // 1024k (Nintendo DSP1)
+			{
+				printf("\nSpecial Cartridge detected : Nintendo DSP-1 \n");
+				Cartridge_Type = 5;
+				game_size=1024*1024;
+			}
+			if ( Hardwaredata == 0x0202) // 1280k (Nintendo DSP1)
+			{
+				printf("\nSpecial Cartridge detected : Nintendo DSP-1 \n");
+				Cartridge_Type = 5;
+				game_size=1024*1280;
+			}
+			if ( Hardwaredata == 0x0203) // 1536k (Nintendo DSP1)
+            		{
+				printf("\nSpecial Cartridge detected : Nintendo DSP-1 \n");
+				Cartridge_Type = 5;
+				game_size=1024*1536;
+			}
+			if ( Hardwaredata == 0x0601) // 1536k (Capcom CX4)
+			{
+				Cartridge_Type = 6;
+				printf("\nSpecial Cartridge detected : Capcom CX4 in X%d mode \n",cx4Type);
+				game_size=1024*1536;
+			}
+			if ( Hardwaredata == 0x0804) // S-DD1 32Mb
+			{
+				printf("\nSpecial Cartridge detected : Nintendo S-DD1 \n");
+				game_size=1024*Hardwaresize*1024;
+				Cartridge_Type = 8;
+			}
+			if ( Hardwaredata == 0x0806) // S-DD1 48Mb
+			{
+				printf("\nSpecial Cartridge detected : Nintendo S-DD1 \n");
+				game_size=1024*Hardwaresize*1024;
+				Cartridge_Type = 8;
+			}
+		}
+	}
+
+	//Temp
+	if (checksum_header == 0xE30C || checksum_header == 0x3163 || checksum_header == 0xCCF7) // Pilotwings (E), Pilotwings (U),  Pilotwings (J)
+		Cartridge_Type = 2;
+	
+	printf("\nCartridge type : %ld \n",Cartridge_Type);
 }
