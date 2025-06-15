@@ -358,7 +358,7 @@ int Detect_Device(void)
 			printf("\n");
 			j=0;
 		}
-    	}
+    	}*/
 
 	for (i = 0; i < 64; i++)
 		{
@@ -367,7 +367,7 @@ int Detect_Device(void)
     		}
 	
 	return 0;
-}*/
+}
 
 void Game_Infos(void)
 {
@@ -526,8 +526,9 @@ void Game_Infos(void)
 		                	printf("\n");
 					j=0;
 		                }
-		        }
-        	}*/
+		        }*/
+        	}
+			
 		if ( Cartridge_Type > 15)
         	{
             		Cartridge_Detected = 1;
