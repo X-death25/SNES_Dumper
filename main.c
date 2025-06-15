@@ -112,7 +112,6 @@ int main(int argc, char *argv[])
 				else if (strcmp(argv[3], "8192") == 0)		game_size=8192;	
 				else if (strcmp(argv[3], "16384") == 0)		game_size=16384;	
 				else if (strcmp(argv[3], "32768") == 0)		game_size=32768;	
-				else if (strcmp(argv[3], "65536") == 0)		game_size=65536;
 				else if (strcmp(argv[3], "auto") == 0)		game_size=game_size/1024;	
 				}
 		}
@@ -123,18 +122,14 @@ int main(int argc, char *argv[])
 				{
 				dump_snes_save_mode=2;
 				
-				if (strcmp(argv[3], "32") == 0)			save_size=32;	
-				else if (strcmp(argv[3], "64") == 0)		save_size=64;
+				if (strcmp(argv[3], "8") == 0)			    save_size=8;	
+				else if (strcmp(argv[3], "16") == 0)		save_size=16;
+				else if (strcmp(argv[3], "32") == 0)		save_size=32;	
+				else if (strcmp(argv[3], "64") == 0)		save_size=64;	
 				else if (strcmp(argv[3], "128") == 0)		save_size=128;	
 				else if (strcmp(argv[3], "256") == 0)		save_size=256;	
 				else if (strcmp(argv[3], "512") == 0)		save_size=512;	
-				else if (strcmp(argv[3], "1024") == 0)		save_size=1024;	
-				else if (strcmp(argv[3], "2048") == 0)		save_size=2048;	
-				else if (strcmp(argv[3], "4096") == 0)		save_size=4096;	
-				else if (strcmp(argv[3], "8192") == 0)		save_size=8192;	
-				else if (strcmp(argv[3], "16384") == 0)		save_size=16384;	
-				else if (strcmp(argv[3], "32768") == 0)		save_size=32768;	
-				else if (strcmp(argv[3], "65536") == 0)		save_size=65536;	
+				else if (strcmp(argv[3], "auto") == 0)		save_size=save_size/1024;	
 				}
 		}
 		else if (strcmp(argv[1], "-writesave") == 0)

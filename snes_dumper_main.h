@@ -234,8 +234,8 @@ void Display_Help(char *prog_name)
 	printf("\n");
 	printf("How to use the program:\n");
 	printf("\n");
-	printf("  %s -dumprom (auto|lorom|hirom|exhirom) (32|64|128|256|512|1024|2048|4096|8192|16384|32768|65535) - Dump ROM\n", prog_name);
-	printf("  %s -dumpsave (auto|manual) (32|64|128|256|512|1024|2048|4096|8192|16384|32768|65535) - Dump Save\n", prog_name);
+	printf("  %s -dumprom (auto|lorom|hirom|exhirom) (auto|32|64|128|256|512|1024|2048|4096|8192|16384|32768) - Dump ROM\n", prog_name);
+	printf("  %s -dumpsave (auto|lorom|hirom|exhirom) (auto|8|16|32|64|128|256|512) - Dump Save\n", prog_name);
 	printf("  %s -writesave - Write Save\n", prog_name);
 	printf("  %s -eraseesave  - Erase Save\n", prog_name);
 	printf("  %s -writeflash (lorom|hirom|exhirom|lorommx29f1610) - Write Flash\n", prog_name);
