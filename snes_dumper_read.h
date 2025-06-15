@@ -1,4 +1,4 @@
-void Dump_SNES_ROM(int mode)
+int Dump_SNES_ROM(int mode)
 {
     if(mode==2)
   	{
@@ -369,7 +369,7 @@ void Dump_SNES_ROM(int mode)
 	}
 }
 
-void Dump_SNES_Save(int mode)
+int Dump_SNES_Save(int mode)
 {
        if(mode==1)	save_size = Ram_Size;
         else		save_size *= 1024;
@@ -409,4 +409,5 @@ void Dump_SNES_Save(int mode)
         myfile = fopen("dump_rom.srm","wb");
         fwrite(buffer_save,1,save_size, myfile);
         fclose(myfile);
+        return 0;
 }
