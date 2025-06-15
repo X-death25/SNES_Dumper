@@ -3,15 +3,6 @@
 #include <SDL.h>												//Main Library file
 #include <SDL_image.h>											//For PNG loading files
 #define printf SDL_Log
-
-int gui_tab_mode=0;
-int dump_mode=0;
-int data_type=0;
-int dump_rom_size_opts=0;
-int dump_cart_mode_opts=0;
-int dump_sram_size_opts=0;
-int dump_sram_type_opts=0;
-int erase_or_write=0;
 #endif
 
 int use_gui=0;
@@ -240,7 +231,20 @@ ssize_t count;													// holding number of devices in list
 
 void Display_Help(char *prog_name)
 {
+	printf("\n");
+	printf("How to use the program:\n");
+	printf("\n");
+	printf("  %s -dumprom (auto|lorom|hirom|exhirom) (32|64|128|256|512|1024|2048|4096|8192|16384|32768|65535) - Dump ROM\n", prog_name);
+	printf("  %s -dumpsave (auto|manual) (32|64|128|256|512|1024|2048|4096|8192|16384|32768|65535) - Dump Save\n", prog_name);
+	printf("  %s -writesave - Write Save\n", prog_name);
+	printf("  %s -eraseesave  - Erase Save\n", prog_name);
+	printf("  %s -writeflash (lorom|hirom|exhirom|lorommx29f1610) - Write Flash\n", prog_name);
+	printf("  %s -eraseflash (auto|lorom|hirom|exhirom|lorommx29f1610) - Erase Flash\n", prog_name);
+	printf("  %s -detectflash - Detect Flash\n", prog_name);
+	printf("  %s -debug - Debug Mode\n", prog_name);
+	printf("\n");
 }
+
 
 int Detect_Device(void)
 {		
