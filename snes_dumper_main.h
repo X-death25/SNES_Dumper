@@ -348,7 +348,7 @@ int Detect_Device(void)
 	printf("Software Firmware version : %d",MAX_VERSION);
 	printf(".%d\n",MIN_VERSION);
 
-	printf("\nDisplaying USB IN buffer\n\n");
+	/*printf("\nDisplaying USB IN buffer\n\n");
 	for (i = 0; i < 64; i++)
 	{
 		printf("%02X ",usb_buffer_in[i]);
@@ -367,7 +367,7 @@ int Detect_Device(void)
     		}
 	
 	return 0;
-}
+}*/
 
 void Game_Infos(void)
 {
@@ -388,7 +388,7 @@ void Game_Infos(void)
 			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
 			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
 
-			printf("\nDisplaying USB IN buffer\n\n");
+			/*printf("\nDisplaying USB IN buffer\n\n");
 			for (i = 0; i < 64; i++)
 			{
 				printf("%02X ",usb_buffer_in[i]);
@@ -398,7 +398,7 @@ void Game_Infos(void)
 					printf("\n");
 					j=0;
 				}
-			}
+			}*/
 			
 			Rom_Type=usb_buffer_in[37]; // Cartridge Format
             		if ( Rom_Type == 0x20 || Rom_Type == 0x30) Cartridge_Detected = 1;
@@ -427,7 +427,7 @@ void Game_Infos(void)
 			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
 			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
 
-			printf("\nDisplaying USB IN buffer\n\n");
+			/*printf("\nDisplaying USB IN buffer\n\n");
 			for (i = 0; i < 64; i++)
 		        {
 		        	printf("%02X ",usb_buffer_in[i]);
@@ -437,7 +437,7 @@ void Game_Infos(void)
 		                	printf("\n");
 					j=0;
 		                }
-		        }
+		        }*/
 
 			Rom_Type=usb_buffer_in[37]; // Cartridge Format
 			if ( Rom_Type == 0x21 || Rom_Type == 0x30 || Rom_Type == 0x31) Cartridge_Detected = 1;
@@ -454,7 +454,7 @@ void Game_Infos(void)
 			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
 			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
 
-			printf("\nDisplaying USB IN buffer\n\n");
+			/*printf("\nDisplaying USB IN buffer\n\n");
 			for (i = 0; i < 64; i++)
 		        {
 		        	printf("%02X ",usb_buffer_in[i]);
@@ -464,7 +464,7 @@ void Game_Infos(void)
 		                	printf("\n");
 					j=0;
 		                }
-		        }
+		        }*/
 			
 			Rom_Type=usb_buffer_in[37]; // Cartridge Format
             		if ( Rom_Type == 0x21 || Rom_Type == 0x31 ) Cartridge_Detected = 1;
@@ -481,7 +481,7 @@ void Game_Infos(void)
 			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
 			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
 
-			printf("\nDisplaying USB IN buffer\n\n");
+			/*printf("\nDisplaying USB IN buffer\n\n");
 			for (i = 0; i < 64; i++)
 		        {
 		        	printf("%02X ",usb_buffer_in[i]);
@@ -491,7 +491,7 @@ void Game_Infos(void)
 		                	printf("\n");
 					j=0;
 		                }
-		        }
+		        }*/
 
             		Rom_Type=usb_buffer_in[38]; // Cartridge Format
 			cx4Type = usb_buffer_in[25];
@@ -516,7 +516,7 @@ void Game_Infos(void)
 			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
 			libusb_bulk_transfer(handle, 0x82,usb_buffer_in,64, &numBytes, 60000);
 
-			printf("\nDisplaying USB IN buffer\n\n");
+			/*printf("\nDisplaying USB IN buffer\n\n");
 			for (i = 0; i < 64; i++)
 		        {
 		        	printf("%02X ",usb_buffer_in[i]);
@@ -527,7 +527,7 @@ void Game_Infos(void)
 					j=0;
 		                }
 		        }
-        	}
+        	}*/
 		if ( Cartridge_Type > 15)
         	{
             		Cartridge_Detected = 1;

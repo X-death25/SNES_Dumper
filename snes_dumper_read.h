@@ -44,10 +44,7 @@ int Dump_SNES_ROM(int mode)
               timer_start();
               libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
               printf("ROM dump in progress...\n");
-  
               res = libusb_bulk_transfer(handle, 0x82,BufferROM,game_size, &numBytes, 60000);
-              timer_end();
-              timer_show();
               if (res != 0)
               {
                   printf("Error \n");
