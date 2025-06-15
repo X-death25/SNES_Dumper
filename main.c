@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 	else if(write_snes_save>0) 		Write_SNES_Save();
 	else if(erase_snes_save>0) 		Erase_SNES_Save();
 	else if(write_snes_flash>0) 		Write_SNES_Flash(write_snes_flash);
-	else if(erase_snes_flash>0) 		Erase_SNES_Flash();
+	else if(erase_snes_flash>0) 		Erase_SNES_Flash(erase_snes_flash);
 	else if(detect_snes_flash>0) 		Detect_SNES_Flash();
 	else if(debug_mode>0) 			Debug_Mode();
 	
