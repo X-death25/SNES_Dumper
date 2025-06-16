@@ -371,7 +371,7 @@ int Detect_Device(void)
 
 void Game_Infos(void)
 {
-	printf("\nDetecting Cartridge type... ");
+	printf("\nDetecting Cartridge type...\n");
 	while ( Cartridge_Detected == 0  )
 	{
         	Cartridge_Type++;
@@ -467,7 +467,7 @@ void Game_Infos(void)
 		        }*/
 			
 			Rom_Type=usb_buffer_in[37]; // Cartridge Format
-            		if ( Rom_Type == 0x21 || Rom_Type == 0x31 ) Cartridge_Detected = 1;
+            if ( Rom_Type == 0x21 || Rom_Type == 0x31 ) Cartridge_Detected = 1;
 		}
 		if ( Cartridge_Type ==  6 ) // Capcom CX4 Cartridge
 		{
