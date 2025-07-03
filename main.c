@@ -14,6 +14,10 @@ Jackobo Le Chocobo (Akina Usagi) -
 #include <string.h>
 #include <assert.h>
 
+//Read CSV Files
+#include "libs/csv.h"
+#include "libs/csv.c"
+
 //SNES Dumper Functions
 #include "snes_dumper_main.h"
 #include "snes_dumper_read.h"

@@ -238,7 +238,7 @@ void Display_Help(char *prog_name)
 	printf("  %s -dumpsave (auto|lorom|hirom|exhirom) (auto|8|16|32|64|128|256|512) - Dump Save\n", prog_name);
 	printf("  %s -writesave - Write Save\n", prog_name);
 	printf("  %s -eraseesave  - Erase Save\n", prog_name);
-	printf("  %s -writeflash (lorom|hirom|exhirom|lorommx29f1610) - Write Flash\n", prog_name);
+	printf("  %s -writeflash - Write Flash\n", prog_name);
 	printf("  %s -eraseflash (auto|lorom|hirom|exhirom|lorommx29f1610) - Erase Flash\n", prog_name);
 	printf("  %s -detectflash - Detect Flash\n", prog_name);
 	printf("  %s -debug - Debug Mode\n", prog_name);
