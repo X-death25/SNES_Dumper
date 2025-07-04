@@ -406,6 +406,50 @@ int Detect_Device(void)
 		usb_buffer_out[i]=0x00;
 	}
 
+	// Add Flashlist CSV info into Snes Dumper Database
+
+	// open csv flash list File
+
+	if (csv_init(&p2, options) != 0)
+	{
+		printf("\n");
+		printf("\n");
+		printf(" ERROR Failed to init CSV Parser for Flashlist ...\n");
+		exit(EXIT_FAILURE);
+	}
+	csv_set_quote(&p2,';');
+
+
+	FILE *fp2 = fopen("flashlist.csv", "r");
+	if (!fp)
+	{
+		printf("\n");
+		printf("\n");
+		printf(" ERROR Can't find flashlist.csv ...\n");
+		return EXIT_FAILURE;
+	}
+
+	char buffer2[BUFFER_SIZE];
+	size_t bytes_read2;
+	while ((bytes_read2 = fread(buffer2, 1, BUFFER_SIZE, fp)) > 0)
+	{
+		if (csv_parse(&p2, buffer2, bytes_read2, cb3, cb4, NULL) != bytes_read2)
+		{
+			printf("\n");
+			printf("\n");
+			printf(" ERROR while parsing file ...\n");
+			return EXIT_FAILURE;
+		}
+	}
+
+	csv_fini(&p, cb3, cb4, NULL);
+	csv_free(&p);
+	fclose(fp);
+
+	printf("CSV Flashlist file opened sucessfully\n");
+	// Afficher le nombre de cellules non vides en colonne A
+	printf("Add : %d Flash ID into SNES Dumper Database \n", non_empty_cells_in_col_A2);
+
 	// At this step we can try to read the buffer wake up Snes Dumper
 	usb_buffer_out[0] = WAKEUP;// Affect request to  WakeUP Command
 	libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 0); // Send Packets to SNES Dumper
