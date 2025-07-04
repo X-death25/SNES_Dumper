@@ -374,7 +374,6 @@ int Erase_SNES_Flash(int erase_mode)
 
 			if ( flash_id == csv_deviceID  )
 			{
-				Index_chksm = i;
 				printf("Found chip in CSV Flashlist ! \n");
 				printf("Position in csv table %d \n",i);
 
