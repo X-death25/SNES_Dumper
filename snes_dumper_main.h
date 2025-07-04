@@ -51,6 +51,7 @@ char * game_name					= NULL;
 #define TEXT_SIZE2 48
 #define MAX_NON_EMPTY_CELLS 				50	
 
+unsigned char options					= 0;
 int current_row2					= 0;
 int current_col2					= 0;
 int non_empty_cells_in_col_A2				= 0; 						// Compteur de cellules non vides en colonne A
