@@ -47,10 +47,12 @@ char * game_name					= NULL;
 
 //CSV Flashlist specific Variables
 
+#define BUFFER_SIZE 					1024
 #define CHIPID_TEXT_SIZE 48 // taille de toute la chaine
 #define TEXT_SIZE2 48
 #define MAX_NON_EMPTY_CELLS 				50	
 
+struct csv_parser p;
 unsigned char options					= 0;
 int current_row2					= 0;
 int current_col2					= 0;
