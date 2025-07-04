@@ -424,7 +424,7 @@ int Detect_Device(void)
 
 
 	FILE *fp2 = fopen("flashlist.csv", "r");
-	if (!fp)
+	if (!fp2)
 	{
 		printf("\n");
 		printf("\n");
