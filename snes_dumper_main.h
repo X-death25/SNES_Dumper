@@ -49,6 +49,7 @@ char * game_name					= NULL;
 
 #define CHIPID_TEXT_SIZE 48 // taille de toute la chaine
 #define TEXT_SIZE2 48
+#define MAX_NON_EMPTY_CELLS 				50	
 
 int current_row2					= 0;
 int current_col2					= 0;
