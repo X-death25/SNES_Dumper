@@ -314,6 +314,12 @@ int Write_SNES_Flash(int write_mode)
 
 int Erase_SNES_Flash(int erase_mode)
 {
+            
+            i=0;
+            for (i = 0; i < 32; i++)
+            {
+                printf("\n");
+            }
 
             if ( erase_mode == 2 )
             {
@@ -352,8 +358,8 @@ int Erase_SNES_Flash(int erase_mode)
                 }
             }
 
-            manufacturer_id = usb_buffer_in[1];
-            chip_id = usb_buffer_in[3];
+            manufacturer_id = usb_buffer_in[5];
+            chip_id = usb_buffer_in[8];
             flash_id = (manufacturer_id<<8) | chip_id;
 
             printf(" Flash ID : %04X \n\n",flash_id);
