@@ -434,7 +434,7 @@ int Detect_Device(void)
 
 	char buffer2[BUFFER_SIZE];
 	size_t bytes_read2;
-	while ((bytes_read2 = fread(buffer2, 1, BUFFER_SIZE, fp)) > 0)
+	while ((bytes_read2 = fread(buffer2, 1, BUFFER_SIZE, fp2)) > 0)
 	{
 		if (csv_parse(&p2, buffer2, bytes_read2, cb3, cb4, NULL) != bytes_read2)
 		{
@@ -447,7 +447,7 @@ int Detect_Device(void)
 
 	csv_fini(&p, cb3, cb4, NULL);
 	csv_free(&p);
-	fclose(fp);
+	fclose(fp2);
 
 	printf("CSV Flashlist file opened sucessfully\n");
 	// Afficher le nombre de cellules non vides en colonne A
