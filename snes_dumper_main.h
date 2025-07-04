@@ -260,6 +260,45 @@ ssize_t count;													// holding number of devices in list
 	}
 #endif
 
+// CSV Function for Flashlist
+
+void cb3(void *s, size_t len, void *data)
+{
+	int target_row = 0; // Index basé sur 0 (deuxième ligne a l'index 1)
+	int col_A = 0;	 // Index basé sur 0 (première colonne a l'index 0)
+	int col_C = 1;	 // Index basé sur 0 (troisième colonne a l'index 2)
+
+	/*
+	if (current_row == target_row && current_col == col_A)
+	{
+		 strncpy(cell_A2, (char *)s, len);	// Copier la donnée dans la variable cell_A2
+		 cell_A2[len] = '\0'; 				// Ajouter le caractère de fin de chaîne
+	}
+	*/
+
+	// Compter les cellules non vides en colonne A et stocker les valeurs sous forme de texte
+	if (current_row2 > 0 && current_col2 == col_A && len > 0)   // Ignorer la première ligne
+	{
+		non_empty_cells_in_col_A2++;
+		if (chipid_text_values_count < MAX_NON_EMPTY_CELLS)
+		{
+			// Assurer que la chaîne est de taille TEXT_SIZE
+			strncpy(chipid_text_values[chipid_text_values_count], (char *)s, TEXT_SIZE2);
+			chipid_text_values[chipid_text_values_count][TEXT_SIZE2] = '\0'; // Ajouter le caractère de fin de chaîne
+			chipid_text_values_count++;
+		}
+	}
+}
+
+
+// Fonction de rappel pour traiter la fin de chaque ligne
+void cb4(int c, void *data)
+{
+	current_row2++;
+	current_col2 = 0; // Réinitialiser le compteur de colonnes à la fin de chaque ligne
+}
+
+
 void Display_Help(char *prog_name)
 {
 	printf("\n");
