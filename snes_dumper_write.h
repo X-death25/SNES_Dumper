@@ -314,6 +314,7 @@ int Write_SNES_Flash(int write_mode)
 
 int Erase_SNES_Flash(int erase_mode)
 {
+
             if ( erase_mode == 2 )
             {
                 Cartridge_Type = 2;
@@ -328,10 +329,40 @@ int Erase_SNES_Flash(int erase_mode)
                 usb_buffer_out[6] = 2;
             }
 
-            usb_buffer_out[0] = ERASE_SNES_FLASH;
-            usb_buffer_out[5] = Cartridge_Type;
+           // usb_buffer_out[0] = ERASE_SNES_FLASH;
+            // usb_buffer_out[5] = Cartridge_Type;
             printf("Starting Flash Erase ...\n");
-            timer_start();
+            printf("Detect Flash inside the cartridge ...\n");
+
+            usb_buffer_out[0] = INFOS_ID;
+            usb_buffer_out[5] = Cartridge_Type;
+            libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
+            libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);
+
+            printf("\nDisplaying USB IN buffer\n\n");
+
+            for (i = 0; i < 64; i++)
+            {
+                printf("%02X ",usb_buffer_in[i]);
+                j++;
+                if (j==16)
+                {
+                    printf("\n");
+                    j=0;
+                }
+            }
+
+            manufacturer_id = usb_buffer_in[1];
+            chip_id = usb_buffer_in[3];
+            flash_id = (manufacturer_id<<8) | chip_id;
+
+            printf(" Flash ID : %04X \n\n",flash_id);
+
+
+
+
+
+            /*timer_start();
             libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
             i=0;
             while(usb_buffer_in[0]!=0x01)
@@ -351,6 +382,7 @@ int Erase_SNES_Flash(int erase_mode)
             fflush(stdout);
 
             return 0;
+            */
 }
 
 int Detect_SNES_Flash(void)
