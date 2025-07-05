@@ -335,8 +335,6 @@ int Erase_SNES_Flash(int erase_mode)
                 usb_buffer_out[6] = 2;
             }
 
-           // usb_buffer_out[0] = ERASE_SNES_FLASH;
-            // usb_buffer_out[5] = Cartridge_Type;
             printf("Starting Flash Erase ...\n");
             printf("Detect Flash inside the cartridge ...\n");
 
@@ -426,11 +424,11 @@ int Erase_SNES_Flash(int erase_mode)
 			}
 		}
 
+             usb_buffer_out[0] = ERASE_SNES_FLASH;
+             usb_buffer_out[5] = Cartridge_Type;
+             usb_buffer_out[6] = csv_erase_algo;
 
-
-
-
-            /*timer_start();
+            timer_start();
             libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
             i=0;
             while(usb_buffer_in[0]!=0x01)
@@ -450,7 +448,6 @@ int Erase_SNES_Flash(int erase_mode)
             fflush(stdout);
 
             return 0;
-            */
 }
 
 int Detect_SNES_Flash(void)
