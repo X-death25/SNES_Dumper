@@ -316,11 +316,11 @@ int Erase_SNES_Flash(int erase_mode)
 {
             
             i=0;
-            for (i = 0; i < 32; i++)
+           /* for (i = 0; i < 32; i++)
             {
                 printf("\n");
             }
-
+            */
             if ( erase_mode == 2 )
             {
                 Cartridge_Type = 2;

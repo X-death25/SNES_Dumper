@@ -451,7 +451,7 @@ int Detect_Device(void)
 
 	printf("CSV Flashlist file opened sucessfully\n");
 	// Afficher le nombre de cellules non vides en colonne A
-	printf("Add : %d Flash ID into SNES Dumper Database \n", non_empty_cells_in_col_A2-1);
+	printf("Add : %d Flash ID into SNES Dumper Database \n", non_empty_cells_in_col_A2);
 
 	// At this step we can try to read the buffer wake up Snes Dumper
 	usb_buffer_out[0] = WAKEUP;// Affect request to  WakeUP Command
