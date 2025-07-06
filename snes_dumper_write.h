@@ -203,7 +203,6 @@ int Write_SNES_Flash(int write_mode)
                     fflush(stdout);
                 }
                 printf("s\n");
-            }
             timer_end();
             timer_show();
             printf("Flash Sucessfully Writted ...\n");
