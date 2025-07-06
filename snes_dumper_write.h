@@ -457,12 +457,9 @@ int Detect_SNES_Flash(void)
             {
                 usb_buffer_in[i]=0x00;
             }
-
-            //Cartridge_Type = 2;
-
-
-            //printf("Detecting Flash...\n");
             printf("-=Flash Memory module detection-=\n\n");
+            printf("Detect Flash inside the cartridge ...\n");
+
             usb_buffer_out[0] = INFOS_ID;
             usb_buffer_out[5] = Cartridge_Type;
             libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
@@ -481,187 +478,74 @@ int Detect_SNES_Flash(void)
                 }
             }
 
-            manufacturer_id = usb_buffer_in[1];
-            chip_id = usb_buffer_in[3];
-            flash_id = (manufacturer_id<<8) | chip_id;
-
-            printf("\n1) Try to detect Microchip / SST flash memory :");
-            printf(" Flash ID : %04X \n\n",flash_id);
-            if ( flash_id != rom_id )
-            {
-                switch(flash_id)
-                {
-                case 0xBFB6 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : 2x SST39SF020 \n");
-                    printf("Capacity : 4Mb \n");
-                    printf("Voltage : 5V \n");
-                    break;
-                case 0xBFB7 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : 2x SST39SF040 \n");
-                    printf("Capacity : 8Mb \n");
-                    printf("Voltage : 5V \n");
-                    break;
-                case 0xBF53 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : SST36VF3204 \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xBF5B :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : SST39VF3201 \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xBF5A :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : SST39VF3202 \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xBF6B :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : SST38VF6401 \n");
-                    printf("Capacity : 64Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                default :
-                    printf("No compatible Flash detected \n");
-                }
-            }
-            else
-            {
-                printf("No Microchip / SST or compatible Flash detected \n");
-            }
-
-            printf("\n2) Try to detect STMicroelectronics flash memory :");
-            printf(" Flash ID : %04X \n\n",flash_id);
-
-            if ( flash_id != rom_id )
-            {
-                switch(flash_id)
-                {
-                case 0x2057 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : M29W320EB \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0x20ED :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : M29W640D \n");
-                    printf("Capacity : 64Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                default :
-                    printf("No compatible Flash detected \n");
-                }
-            }
-            else
-            {
-                printf("No STMicroelectronics flash detected \n");
-            }
-
-            printf("\n3) Try to detect Macronix flash memory :");
-            printf(" Flash ID : %04X \n\n",flash_id);
-
-            if ( flash_id != rom_id )
-            {
-                switch(flash_id)
-                {
-                case 0xC2CB :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : MX29LV640 \n");
-                    printf("Capacity : 64Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xC2C9 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : MX29LV640 \n");
-                    printf("Capacity : 64Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xC2A7 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : MX29LV320 \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                case 0xC2A8 :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : MX29LV320 \n");
-                    printf("Capacity : 32Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                default :
-                    printf("No compatible Flash detected \n");
-                }
-            }
-            else
-            {
-                printf("No Macronix Flash detected \n");
-            }
-
-            printf("\n4) Try to detect Spansion flash memory :");
-            printf(" Flash ID : %04X \n\n",flash_id);
-
-            if ( flash_id != rom_id )
-            {
-                switch(flash_id)
-                {
-                case 0x017E :
-                    printf("Flash Memory detected ! \n");
-                    printf("Memory : S29GL064 \n");
-                    printf("Capacity : 64Mb \n");
-                    printf("Voltage : 3.3V \n");
-                    break;
-                default :
-                    printf("No compatible Flash detected \n");
-                }
-            }
-            else
-            {
-                printf("No Spansion Flash detected \n");
-            }
-
-            // Try to detect MX29F1610 special detection
-
-            printf("\n5) Try to detect Macronix MX29F1610 flash memory :");
-            usb_buffer_out[0] = INFOS_ID;
-            usb_buffer_out[5] = Cartridge_Type;
-            libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
-            libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);
-
-            /* printf("\nDisplaying USB IN buffer\n\n");
-
-                for (i = 0; i < 64; i++)
-                 {
-                     printf("%02X ",usb_buffer_in[i]);
-             		j++;
-             		if (j==16){printf("\n");j=0;}
-                 }*/
-
             manufacturer_id = usb_buffer_in[5];
             chip_id = usb_buffer_in[8];
             flash_id = (manufacturer_id<<8) | chip_id;
-            printf(" Flash ID : %04X \n\n",flash_id);
 
-            switch(flash_id)
-            {
-            case 0xC2F1 :
-                printf("Flash Memory detected ! \n");
-                printf("Memory : MX29F1610 \n");
-                printf("Capacity : 16Mb \n");
-                printf("Voltage : 5V \n");
-                break;
-            default :
-                printf("No compatible Flash detected \n");
-            }
+            printf("Flash ID : %04X \n\n",flash_id);
 
+        for (i = 0; i < chipid_text_values_count; i++)
+		{
+			strncpy(txt_csv_deviceID,chipid_text_values[i],4);
+			//printf(" \n txt chipid value : %s \n",txt_csv_deviceID);
+			csv_deviceID = (unsigned short)strtol(txt_csv_deviceID, NULL, 16);
+			//printf(" \n DEC Device ID value : %ld \n",csv_deviceID);
+			// If found we need to copy all usefull info from CSV to MD dumper Var
 
-            return 0;
+			if ( flash_id == csv_deviceID  )
+			{
+				printf("Found chip in CSV Flashlist ! \n");
+				printf("Position in csv table %d \n",i);
+
+				// Flash Size
+				strncpy(txt_csv_flash_size,chipid_text_values[i]+5,3);
+				txt_csv_flash_size[4] = '\0'; // Null-terminate the output string
+				//printf("Txt flash size : %s \n",txt_csv_flash_size);
+				csv_flash_size = (unsigned char)strtol(txt_csv_flash_size, NULL, 10);
+				//printf("CSV Flash Size  %d \n",csv_flash_size);
+				flash_size=1024*csv_flash_size;
+				//printf("La valeur de FlashSize est %ld Ko \n",flash_size);
+
+				// Algo Erase
+				strncpy(txt_csv_erase_algo,chipid_text_values[i]+9,2);
+				txt_csv_erase_algo[2] = '\0'; // Null-terminate the output string
+				//printf("Txt Erase Algo : %s \n",txt_csv_erase_algo);
+				csv_erase_algo = (unsigned char)strtol(txt_csv_erase_algo, NULL, 8);
+				//printf("CSV Erase Algo  %d \n",csv_erase_algo);
+
+				// Write Algo
+				strncpy(txt_csv_write_algo,chipid_text_values[i]+12,2);
+				txt_csv_write_algo[2] = '\0'; // Null-terminate the output string
+				//printf("Txt Write Algo  : %s \n",txt_csv_write_algo);
+				csv_write_algo = (unsigned char)strtol(txt_csv_write_algo, NULL, 8);
+				//printf("CSV Write Algo %d \n",csv_write_algo);
+
+				// Chip Name
+				strncpy(txt_csv_flash_name,chipid_text_values[i]+15,11);
+				txt_csv_flash_name[12] = '\0'; // Null-terminate the output string
+				//printf("Flash Device Reference : %s \n",txt_csv_flash_name);
+
+				// Voltage
+				strncpy(txt_csv_voltage,chipid_text_values[i]+27,2);
+				txt_csv_voltage[2] = '\0'; // Null-terminate the output string
+				//printf("Txt Chip Voltage : %s \n",txt_csv_voltage);
+				csv_voltage = (unsigned char)strtol(txt_csv_voltage, NULL, 8);
+				//printf("CSV Chip Voltage  %d \n",csv_voltage);
+
+				// Manufacturer
+				strncpy(txt_csv_man_name,chipid_text_values[i]+30,18);
+				txt_csv_man_name[19] = '\0'; // Null-terminate the output string
+				//printf("Chip Manufacturer : %s \n",txt_csv_man_name);
+
+				printf("Memory : %s \n",txt_csv_flash_name);
+				printf("Capacity %ld Ko \n",flash_size);
+				printf("Chip Manufacturer : %s \n",txt_csv_man_name);
+				printf("Chip Voltage %ld V \n",csv_voltage);
+				printf("CSV Erase Algo  %d \n",csv_erase_algo);
+				printf("CSV Write Algo %d \n",csv_write_algo);
+			}
+		}
+        return 0;
 }
 
 int Debug_Mode(void)
