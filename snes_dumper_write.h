@@ -428,6 +428,14 @@ int Erase_SNES_Flash(int erase_mode)
              usb_buffer_out[5] = Cartridge_Type;
              usb_buffer_out[6] = csv_erase_algo;
 
+            if (Cartridge_Type == 2)
+             {
+                printf("\n Starting ERASE flash %s in LoRom Mode  ",txt_csv_flash_name));
+             }
+             else
+             {
+                printf("\n Starting ERASE flash %s in HiRom Mode  ",txt_csv_flash_name));
+             }
             timer_start();
             libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
             i=0;
