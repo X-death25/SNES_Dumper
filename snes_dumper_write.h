@@ -338,7 +338,7 @@ int Write_SNES_Flash(int write_mode)
 				{
 					// Fill usb out buffer with save data in 8bit
 					for (i=0; i<32; i++)
-						usb_buffer_out[32+i] = buffer_rom [i+k];
+						usb_buffer_out[32+i] = BufferROM[i+k];
 					k=k+32;
 					i=0;
 
