@@ -250,6 +250,7 @@ int Write_SNES_Flash(int write_mode)
 
             if (csv_write_algo == 1) // Algo for MX29LV320 or compatible
         {
+                printf("Starting Write Flash with Algo 1 ...\n");
 
                 // Sending ROM to Buffer
 
@@ -300,7 +301,88 @@ int Write_SNES_Flash(int write_mode)
             printf("Flash Sucessfully Writted ...\n");
             return 0;
         }
+
+        if (csv_write_algo == 2) // Algo for MX29LV3211 or compatible
+        {
+            printf("Starting Write Flash with Algo 2 ...\n");
+
+             // Sending ROM to Buffer
+
+                myfile = fopen("rom.sfc","rb");
+                fseek(myfile,0,SEEK_END);
+                game_size = ftell(myfile);
+                BufferROM = (unsigned char*)malloc(game_size);
+                rewind(myfile);
+                fread(BufferROM, 1, game_size, myfile);
+                fclose(myfile);
+
+                i=0;
+                address = 0;
+                j=0;
+                k=0;
+
+            timer_start();
+
+			printf("Create MX Buffer...\n");
+			usb_buffer_out[0] = CREATE_MX_BUFFER;
+			libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 60000);
+			i=0;
+			while(usb_buffer_in[6]!=0xAA)			libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);   //wait status
+			printf("Buffer MX Created sucessfully ! \n");
+            int new=0;
+			int old=0;
+            while (k < game_size)
+			{
+				// Send ROM To MX Buffer
+				while (j!=8)
+				{
+					// Fill usb out buffer with save data in 8bit
+					for (i=0; i<32; i++)
+						usb_buffer_out[32+i] = buffer_rom [i+k];
+					k=k+32;
+					i=0;
+
+					printf("Send ROM to MX Buffer...\n");
+					usb_buffer_out[0] = WRITE_MX_BUFFER; // Select write in 16bit Mode
+					usb_buffer_out[1] = address & 0xFF;
+					usb_buffer_out[2] = (address & 0xFF00)>>8;
+					usb_buffer_out[3] = (address & 0xFF0000)>>16;
+					usb_buffer_out[6] = j;
+					j=j+1;
+
+					libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
+					while(usb_buffer_in[6]!=0xBB)	libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);   //wait status
+				}
+				j=0;
+				
+				printf("Flash Buffer in memory...\n");
+				usb_buffer_out[0] = FLASH_MX_BUFFER; // Select write in 16bit Mode
+				usb_buffer_out[1] = address & 0xFF;
+				usb_buffer_out[2] = (address & 0xFF00)>>8;
+				usb_buffer_out[3] = (address & 0xFF0000)>>16;
+
+				libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
+				while(usb_buffer_in[6]!=0xCC)		libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);   //wait status
+				
+				printf("Buffer Flashed ! \n");
+				address=address+128;
+				new=((200 * (address)) / (game_size));
+				if(new!=old)
+				{
+					old=new;
+					printf("Flash ROM in progress: %ld%%", new);
+					fflush(stdout);
+				}
+			}
+
+			printf("MX Flashed sucessfully ! \n");
+			timer_end();
+			timer_show();
+		}
+
+        
 }
+
 
 int Erase_SNES_Flash(int erase_mode)
 {
