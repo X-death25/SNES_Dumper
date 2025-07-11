@@ -362,8 +362,10 @@ int Write_SNES_Flash(int write_mode)
 				usb_buffer_out[3] = (address & 0xFF0000)>>16;
 
 				libusb_bulk_transfer(handle, 0x01,usb_buffer_out, sizeof(usb_buffer_out), &numBytes, 6000);
-				while(usb_buffer_in[6]!=0xCC)		libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);   //wait status
-				
+				/*while(usb_buffer_in[6]!=0xCC)
+                {
+                    libusb_bulk_transfer(handle, 0x82, usb_buffer_in, sizeof(usb_buffer_in), &numBytes, 6000);   //wait status
+                }	*/	
 				printf("Buffer Flashed ! \n");
 				address=address+128;
 				new=((200 * (address)) / (game_size));
